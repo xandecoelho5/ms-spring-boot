@@ -1,6 +1,7 @@
 package com.xandecoelho5.OrderService.service;
 
 import com.xandecoelho5.OrderService.entity.Order;
+import com.xandecoelho5.OrderService.external.client.ProductService;
 import com.xandecoelho5.OrderService.model.OrderRequest;
 import com.xandecoelho5.OrderService.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import java.time.Instant;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductService productService;
 
     @Override
     public long placeOrder(OrderRequest orderRequest) {
@@ -25,6 +27,9 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Order placed successfully: {} ", orderRequest);
 
+        productService.reduceQuantity(orderRequest.productId(), orderRequest.quantity());
+
+        log.info("Creating Order with Status CREATED");
         Order order = Order.builder()
                 .amount(orderRequest.totalAmount())
                 .orderStatus("CREATED")
