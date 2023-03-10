@@ -10,6 +10,7 @@ import com.xandecoelho5.OrderService.external.response.ProductResponse;
 import com.xandecoelho5.OrderService.model.OrderRequest;
 import com.xandecoelho5.OrderService.model.OrderResponse;
 import com.xandecoelho5.OrderService.repository.OrderRepository;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderDate(Instant.now())
                 .quantity(orderRequest.quantity())
                 .build();
-        orderRepository.save(order);
+        order = orderRepository.save(order);
 
         log.info("Calling Payment Service to complete the payment");
         PaymentRequest paymentRequest = PaymentRequest.builder()
@@ -66,7 +67,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         order.setOrderStatus(orderStatus);
-        orderRepository.save(order);
+        order = orderRepository.save(order);
 
         log.info("Order with id {} placed successfully", order.getId());
 
