@@ -12,11 +12,45 @@ spring:
           uri: lb://ORDER-SERVICE
           predicates:
             - Path=/order/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: ORDER-SERVICE
+                fallbackuri: forward:/orderServiceFallback
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 1
         - id: PAYMENT_SERVICE
           uri: lb://PAYMENT_SERVICE
           predicates:
             - Path=/payment/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: PAYMENT-SERVICE
+                fallbackuri: forward:/paymentServiceFallback
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 1
         - id: PRODUCT_SERVICE
           uri: lb://PRODUCT_SERVICE
           predicates:
             - Path=/product/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: PRODUCT-SERVICE
+                fallbackuri: forward:/productServiceFallback
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 1
+okta:
+  oauth2:
+#    issuer: https://dev-41677855.okta.com/oauth2/default
+#    audience: api://default
+    clientId: 0oa8np5qkpPliOMSP5d7
+    clientSecret: p84Jih4me2Iasp5JUzndACiaPmAoW_QzAQ1rz8yI
+    scopes: openid, profile, email, offline_access
