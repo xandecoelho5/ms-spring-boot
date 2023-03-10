@@ -1,0 +1,22 @@
+server:
+  port: 9090
+spring:
+  application:
+    name: API-GATEWAY
+  config:
+    import: configserver:http://localhost:9296
+  cloud:
+    gateway:
+      routes:
+        - id: ORDER-SERVICE
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order/**
+        - id: PAYMENT_SERVICE
+          uri: lb://PAYMENT_SERVICE
+          predicates:
+            - Path=/payment/**
+        - id: PRODUCT_SERVICE
+          uri: lb://PRODUCT_SERVICE
+          predicates:
+            - Path=/product/**
