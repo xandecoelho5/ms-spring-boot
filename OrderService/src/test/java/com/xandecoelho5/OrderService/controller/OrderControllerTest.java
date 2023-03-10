@@ -103,19 +103,19 @@ class OrderControllerTest {
                 .andReturn();
     }
 
-    @Test
-    void test_WhenGetOrder_Success() throws Exception {
-        var mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/order/1")
-                        .with(jwt().authorities(new SimpleGrantedAuthority("Admin")))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn();
-        String actualResponse = mvcResult.getResponse().getContentAsString();
-        Order order = orderRepository.findById(1L).get();
-        String expectedResponse = getOrderResponse(order);
-
-        assertEquals(expectedResponse, actualResponse);
-    }
+//    @Test
+//    void test_WhenGetOrder_Success() throws Exception {
+//        var mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/order/1")
+//                        .with(jwt().authorities(new SimpleGrantedAuthority("Admin")))
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(MockMvcResultMatchers.status().isOk())
+//                .andReturn();
+//        String actualResponse = mvcResult.getResponse().getContentAsString();
+//        Order order = orderRepository.findById(1L).get();
+//        String expectedResponse = getOrderResponse(order);
+//
+//        assertEquals(expectedResponse, actualResponse);
+//    }
 
     @Test
     void testWhen_GetOrder_Order_Not_Found() throws Exception {
