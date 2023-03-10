@@ -1,7 +1,9 @@
 package com.xandecoelho5.PaymentService.service;
 
 import com.xandecoelho5.PaymentService.entity.TransactionDetails;
+import com.xandecoelho5.PaymentService.model.PaymentMode;
 import com.xandecoelho5.PaymentService.model.PaymentRequest;
+import com.xandecoelho5.PaymentService.model.PaymentResponse;
 import com.xandecoelho5.PaymentService.repository.TranscationDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -33,5 +35,21 @@ public class PaymentServiceImpl implements PaymentService {
         log.info("Transaction with Id {} Completed successfully", transactionDetails.getId());
 
         return transactionDetails.getId();
+    }
+
+    @Override
+    public PaymentResponse getPaymentDetailsByOrderId(long orderId) {
+        log.info("Payment details request received for order Id: {}", orderId);
+
+        var transactionDetails = transcationDetailsRepository.findByOrderId(orderId);
+
+        return PaymentResponse.builder()
+                .paymentId(transactionDetails.getId())
+                .paymentMode(PaymentMode.valueOf(transactionDetails.getPaymentMode()))
+                .paymentDate(transactionDetails.getPaymentDate())
+                .orderId(transactionDetails.getOrderId())
+                .paymentStatus(transactionDetails.getPaymentStatus())
+                .amount(transactionDetails.getAmount())
+                .build();
     }
 }
