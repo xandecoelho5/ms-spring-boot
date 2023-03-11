@@ -50,7 +50,7 @@ class OrderControllerTest {
     private MockMvc mockMvc;
     @RegisterExtension
     static WireMockExtension wireMockServer = WireMockExtension.newInstance()
-            .options(WireMockConfiguration.wireMockConfig().port(8080))
+            .options(WireMockConfiguration.wireMockConfig().port(8081))
             .build();
 
     private final ObjectMapper objectMapper = new ObjectMapper()
